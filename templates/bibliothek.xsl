@@ -10,6 +10,9 @@
     <xsl:param name="sortBy" select="'genre'" />
     <xsl:param name="order" select="'ascending'" />
     <xsl:param name="type" select="'text'" />
+    <xsl:param name="search" select="''" />
+
+    <!--<xsl:key name="bookList" match="book" use="title" /> -->
 
     <xsl:template match="/">
         <html>
@@ -40,6 +43,12 @@
                             <li><a href="#enter">Enter new Books</a></li>
                             <li><a href="#contact">Contact</a></li>
                         </ul>
+                        <form class="navbar-form navbar-right" action="/" role="search">
+                            <div class="form-group">
+                                <input type="text" name="search" class="form-control" placeholder="Search" />
+                            </div>
+                            <button type="submit" class="btn btn-default">Submit</button>
+                        </form>
                     </div><!--/.nav-collapse -->
                 </div>
             </nav>
@@ -47,52 +56,77 @@
             <div class="container">
 
                 <div class="wrapper">
-                    <h1>Entire List of our Books</h1>
+                    <h1>List of our Books</h1>
 
                     <table class="table table-striped">
 
                         <tr>
-                            <th><a href="/?sort=author">Author</a></th>
-                            <th><a href="/?sort=title">Title</a></th>
-                            <th><a href="/?sort=genre">Genre</a></th>
-                            <th><a href="/?sort=number(price)?type=number">Price</a></th>
-                            <th><a href="/?sort=publish_date">Publish Date</a></th>
-                            <th><a href="/?sort=description">Description</a></th>
+                            <th><a href="/?sort=author&amp;order={$order}">Author</a></th>
+                            <th><a href="/?sort=title&amp;order={$order}">Title</a></th>
+                            <th><a href="/?sort=genre&amp;order={$order}">Genre</a></th>
+                            <th><a href="/?sort=price&amp;type=number&amp;order={$order}">Price</a></th>
+                            <th><a href="/?sort=publish_date&amp;order={$order}">Publish Date</a></th>
+                            <th><a href="/?sort=description&amp;order={$order}">Description</a></th>
                         </tr>
 
-                        <xsl:for-each select="catalog/book">
-
-                            <xsl:sort select="*[name()=$sortBy]" order="{$order}" data-type="{$type}"/>
-
-                            <tr>
-                                <td>
-                                    <xsl:value-of select="author"/>
-                                </td>
-                                <td>
-                                    <xsl:value-of select="title"/>
-                                </td>
-                                <td>
-                                    <xsl:value-of select="genre"/>
-                                </td>
-                                <td>
-                                    <xsl:value-of select="price"/>
-                                </td>
-                                <td>
-                                    <xsl:value-of select="publish_date"/>
-                                </td>
-                                <td>
-                                    <xsl:value-of select="description"/>
-                                </td>
-                            </tr>
-                        </xsl:for-each>
+                        <xsl:choose>
+                            <xsl:when test="$search != ''">
+                                <xsl:for-each select="//catalog/book[*[contains(.,$search)]]">
+                                    <xsl:sort select="*[name()=$sortBy]" order="{$order}" data-type="{$type}"/>
+                                    <tr>
+                                        <td>
+                                            <xsl:value-of select="author"/>
+                                        </td>
+                                        <td>
+                                            <xsl:value-of select="title"/>
+                                        </td>
+                                        <td>
+                                            <xsl:value-of select="genre"/>
+                                        </td>
+                                        <td>
+                                            <xsl:value-of select="price"/>
+                                        </td>
+                                        <td>
+                                            <xsl:value-of select="publish_date"/>
+                                        </td>
+                                        <td>
+                                            <xsl:value-of select="description"/>
+                                        </td>
+                                    </tr>
+                                </xsl:for-each>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:for-each select="//catalog/book">
+                                    <xsl:sort select="*[name()=$sortBy]" order="{$order}" data-type="{$type}"/>
+                                    <tr>
+                                        <td>
+                                            <xsl:value-of select="author"/>
+                                        </td>
+                                        <td>
+                                            <xsl:value-of select="title"/>
+                                        </td>
+                                        <td>
+                                            <xsl:value-of select="genre"/>
+                                        </td>
+                                        <td>
+                                            <xsl:value-of select="price"/>
+                                        </td>
+                                        <td>
+                                            <xsl:value-of select="publish_date"/>
+                                        </td>
+                                        <td>
+                                            <xsl:value-of select="description"/>
+                                        </td>
+                                    </tr>
+                                </xsl:for-each>
+                            </xsl:otherwise>
+                        </xsl:choose>
 
                 </table>
 
                 </div>
 
             </div><!-- /.container -->
-
-
 
         </body>
         </html>
