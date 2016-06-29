@@ -9,6 +9,7 @@
 
     <xsl:include href="header.xsl" />
     <xsl:include href="navigation.xsl" />
+    <xsl:include href="js.xsl" />
 
     <xsl:template match="/">
         <html>
@@ -24,6 +25,7 @@
 
             </div><!-- /.container -->
 
+            <xsl:call-template name="js"/>
         </body>
         </html>
     </xsl:template>
