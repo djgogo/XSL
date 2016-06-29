@@ -7,12 +7,7 @@
             encoding="UTF-8"
             indent="yes" />
 
-    <xsl:param name="sortBy" select="'genre'" />
-    <xsl:param name="order" select="'ascending'" />
-    <xsl:param name="type" select="'text'" />
-    <xsl:param name="search" select="''" />
-
-    <!--<xsl:key name="bookList" match="book" use="title" /> -->
+   <xsl:include href="parameter.xsl" />
 
     <xsl:template match="/">
         <html>
@@ -39,11 +34,11 @@
                     </div>
                     <div id="navbar" class="collapse navbar-collapse">
                         <ul class="nav navbar-nav">
-                            <li class="active"><a href="/">List of Books</a></li>
-                            <li><a href="#enter">Enter new Books</a></li>
+                            <li class="active"><a href="/bibliothek.php">List of Books</a></li>
+                            <li><a href="enterBooks.php">Enter new Books</a></li>
                             <li><a href="#contact">Contact</a></li>
                         </ul>
-                        <form class="navbar-form navbar-right" action="/" role="search">
+                        <form class="navbar-form navbar-right" action="/bibliothek.php" role="search">
                             <div class="form-group">
                                 <input type="text" name="search" class="form-control" placeholder="Search" />
                             </div>
@@ -61,12 +56,12 @@
                     <table class="table table-striped">
 
                         <tr>
-                            <th><a href="/?sort=author&amp;order={$order}">Author</a></th>
-                            <th><a href="/?sort=title&amp;order={$order}">Title</a></th>
-                            <th><a href="/?sort=genre&amp;order={$order}">Genre</a></th>
-                            <th><a href="/?sort=price&amp;type=number&amp;order={$order}">Price</a></th>
-                            <th><a href="/?sort=publish_date&amp;order={$order}">Publish Date</a></th>
-                            <th><a href="/?sort=description&amp;order={$order}">Description</a></th>
+                            <th><a href="/bibliothek.php?sort=author&amp;order={$order}">Author</a></th>
+                            <th><a href="/bibliothek.php?sort=title&amp;order={$order}">Title</a></th>
+                            <th><a href="/bibliothek.php?sort=genre&amp;order={$order}">Genre</a></th>
+                            <th><a href="/bibliothek.php?sort=price&amp;type=number&amp;order={$order}">Price</a></th>
+                            <th><a href="/bibliothek.php?sort=publish_date&amp;order={$order}">Publish Date</a></th>
+                            <th><a href="/bibliothek.php?sort=description&amp;order={$order}">Description</a></th>
                         </tr>
 
                         <xsl:choose>
