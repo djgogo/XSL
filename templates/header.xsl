@@ -1,5 +1,6 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
+        <xsl:template name="header" match="*">
 
         <head>
         <meta charset="utf-8" />
@@ -13,5 +14,6 @@
         <link href="bootstrap/css/starter-template.css" rel="stylesheet" />
         </head>
 
+        </xsl:template>
 
 </xsl:stylesheet>
