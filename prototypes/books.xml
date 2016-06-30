@@ -149,4 +149,20 @@
     <publish_date>2016-06-29</publish_date>
     <description>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna </description>
   </book>
+  <book id="bk117">
+    <author>Anna Tester</author>
+    <title>Read this Book please</title>
+    <genre>Romance</genre>
+    <price>20.12</price>
+    <publish_date>2016-06-30</publish_date>
+    <description>Test Beschreibung</description>
+  </book>
+  <book id="bk118">
+    <author>Anna Tester</author>
+    <title>Welcome to the Future</title>
+    <genre>Romance</genre>
+    <price>30.33</price>
+    <publish_date>2016-06-30</publish_date>
+    <description>Test Test Test Test Test Test</description>
+  </book>
 </catalog>

@@ -19,11 +19,11 @@ class Price
     /**
      * @param $price
      */
-    private function ensureValid($price)
+    private function ensureValid(string $price)
     {
-        $check = preg_match('/^\d+(?:\.\d{2})?$/', $price);
+        $check = preg_match('/^\d{0,3}(\.\d{1,2})?$/', $price);
 
-       if ($check === false || $check === '0' || empty($price) || !is_numeric($price) || strlen((string)$price) > 5) {
+       if ($check === false || $check === 0 || empty($price) || !is_numeric($price) || $price >= 101) {
             throw new \InvalidPriceException();
        }
 

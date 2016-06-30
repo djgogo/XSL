@@ -2,24 +2,19 @@
 require_once __DIR__ . '/bootstrap.php';
 
 /* Enter New Books Template */
-$dom = new \TheSeer\fDOM\fDOMDocument();
-$dom->load(__DIR__.'/templates/booksForm.xsl');
-
-/* Books Catalogue */
-$books = new \TheSeer\fDOM\fDOMDocument();
-$books->preserveWhiteSpace = false;
-$books->formatOutput = true;
-$books->load(__DIR__.'/prototypes/books.xml');
+$bookFormTemplate = new \TheSeer\fDOM\fDOMDocument();
+$bookFormTemplate->load(__DIR__.'/templates/booksForm.xsl');
 
 /* Form Validation File */
 $dataModel = new \TheSeer\fDOM\fDOMDocument();
 $dataModel->load(__DIR__.'/prototypes/bookFormValidation.xml');
 
-$renderer = new XslRenderer($dom, new \TheSeer\fXSL\fXSLTProcessor());
+$renderer = new XslRenderer($bookFormTemplate, new \TheSeer\fXSL\fXSLTProcessor());
 
-/* XML Backend Class */
+/* File & XML Backend */
 $filePath = '/var/www/bibliothek.competec.ch/prototypes/books.xml';
-$xmlBackend = new XmlBackend($filePath, $books);
+$fileBackend = new FileBackend($filePath);
+$xmlBackend = new XmlBackend($filePath, $fileBackend);
 
 /* Request Process */
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {

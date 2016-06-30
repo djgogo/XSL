@@ -4,34 +4,45 @@ declare(strict_types = 1);
 class XmlBackend
 {
     /**
-     * @var \TheSeer\fDOM\fDOMDocument
-     */
-    private $dom;
-    /**
      * @var string
      */
     private $filePath;
+    /**
+     * @var FileBackend
+     */
+    private $fileBackend;
 
     /**
      * XmlBackend constructor.
      * @param string $filePath
-     * @param \TheSeer\fDOM\fDOMDocument $dom
+     * @param FileBackend $fileBackend
      */
-    public function __construct(string $filePath, \TheSeer\fDOM\fDOMDocument $dom)
+    public function __construct(string $filePath, FileBackend $fileBackend)
     {
         $this->filePath = $filePath;
-        $this->dom = $dom;
+        $this->fileBackend = $fileBackend;
     }
 
     /**
      * @param array $data
+     * @throws Exception
      * @throws XmlBackendException
      * @throws \TheSeer\fDOM\fDOMException
      */
     public function writeDataToXml(array $data)
     {
-        $book = $this->dom->createElement('book');
-        $book->setAttribute('id', $this->evaluateBookId());
+        $xmlString = $this->fileBackend->load($this->filePath);
+
+        /**
+         * @var $dom \TheSeer\fDOM\fDOMDocument
+         */
+        $dom = new \TheSeer\fDOM\fDOMDocument();
+        $dom->preserveWhiteSpace = false;
+        $dom->formatOutput = true;
+        $dom->loadXML($xmlString);
+
+        $book = $dom->createElement('book');
+        $book->setAttribute('id', $this->evaluateBookId($dom));
 
         $book->appendElement('author', $data['author']);
         $book->appendElement('title' , $data['title']);
@@ -40,20 +51,18 @@ class XmlBackend
         $book->appendElement('publish_date' , $data['publishDate']);
         $book->appendElement('description' , $data['description']);
 
-        $this->dom->documentElement->appendChild($book);
+        $dom->documentElement->appendChild($book);
 
-        $xml = $this->dom->save($this->filePath);
-        if ($xml === false) {
-            throw new XmlBackendException('Datei "' . $this->filePath . '" konnte nicht gespeichert werden');
-        }
+        $this->fileBackend->save($this->filePath, $dom->saveXML());
     }
 
     /**
+     * @param \TheSeer\fDOM\fDOMDocument $dom
      * @return string
      */
-    public function evaluateBookId() : string
+    private function evaluateBookId(\TheSeer\fDOM\fDOMDocument $dom) : string
     {
-        $books = $this->dom->query("/catalog/book[last()]");
+        $books = $dom->query("/catalog/book[last()]");
 
         $lastAssignedId = '';
         foreach($books as $book) {
@@ -63,9 +72,9 @@ class XmlBackend
             $lastAssignedId = $book->getAttribute('id');
         }
 
-        $newId = substr($lastAssignedId, -3);
+        $newId = (int)substr($lastAssignedId, -3);
         $newId++;
 
-        return "bk$newId";
+        return 'bk' . $newId;
     }
 }

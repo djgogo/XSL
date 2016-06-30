@@ -68,11 +68,21 @@ class BooksFormCommand
             $this->dataModel->queryOne('//field[@name="price"]/error')->nodeValue = 'Bitte geben Sie einen gültigen Preis ein';
         }
 
+        if ($this->genre != 'Computer' && $this->genre != 'Fantasy' && $this->genre != 'Romance' && $this->genre != 'Horror' && $this->genre != 'Science Fiction') {
+            throw new Exception('Genre nicht in Datei vorhanden! ' . $this->genre);
+        }
+
+        try {
+            new Date($this->publishDate);
+        } catch (\InvalidArgumentException $e) {
+            $this->dataModel->queryOne('//field[@name="publishDate"]/error')->nodeValue = 'Bitte geben Sie ein gültiges Datum ein';
+        }
+
         $this->validateEmptyFormField($this->author, 'author', 'Bitte geben Sie den Author Namen ein');
         $this->validateEmptyFormField($this->title, 'title', 'Bitte geben Sie den Titelnamen ein');
         $this->validateEmptyFormField($this->genre, 'genre', 'Bitte geben sie das Genre ein');
         $this->validateEmptyFormField($this->price, 'price', 'Bitte geben sie den Preis ein');
-        $this->validateEmptyFormField($this->publishDate, 'publishDate', 'Bittte geben Sie das Publikationsdatum ein');
+        $this->validateEmptyFormField($this->publishDate, 'publishDate', 'Bitte geben Sie das Publikationsdatum ein');
         $this->validateEmptyFormField($this->description, 'description', 'Bitte geben sie die Beschreibung ein');
     }
 
@@ -126,39 +136,24 @@ class BooksFormCommand
     {
         switch ($this->genre){
             case 'Computer':
-                $this->dataModel->queryOne('//field[@name="genre"]/computer')->nodeValue = 'selected';
-                $this->dataModel->queryOne('//field[@name="genre"]/fantasy')->nodeValue = '';
-                $this->dataModel->queryOne('//field[@name="genre"]/romance')->nodeValue = '';
-                $this->dataModel->queryOne('//field[@name="genre"]/horror')->nodeValue = '';
-                $this->dataModel->queryOne('//field[@name="genre"]/scienceFiction')->nodeValue = '';
+                $this->selectDropDownValue('computer');
+                $this->unSelectDropDownValue(['fantasy', 'romance', 'horror', 'scienceFiction']);
                 break;
             case 'Fantasy';
-                $this->dataModel->queryOne('//field[@name="genre"]/computer')->nodeValue = '';
-                $this->dataModel->queryOne('//field[@name="genre"]/fantasy')->nodeValue = 'selected';
-                $this->dataModel->queryOne('//field[@name="genre"]/romance')->nodeValue = '';
-                $this->dataModel->queryOne('//field[@name="genre"]/horror')->nodeValue = '';
-                $this->dataModel->queryOne('//field[@name="genre"]/scienceFiction')->nodeValue = '';
+                $this->selectDropDownValue('fantasy');
+                $this->unSelectDropDownValue(['computer', 'romance', 'horror', 'scienceFiction']);
                 break;
             case 'Romance';
-                $this->dataModel->queryOne('//field[@name="genre"]/computer')->nodeValue = '';
-                $this->dataModel->queryOne('//field[@name="genre"]/fantasy')->nodeValue = '';
-                $this->dataModel->queryOne('//field[@name="genre"]/romance')->nodeValue = 'selected';
-                $this->dataModel->queryOne('//field[@name="genre"]/horror')->nodeValue = '';
-                $this->dataModel->queryOne('//field[@name="genre"]/scienceFiction')->nodeValue = '';
+                $this->selectDropDownValue('romance');
+                $this->unSelectDropDownValue(['computer', 'fantasy', 'horror', 'scienceFiction']);
                 break;
             case 'Horror';
-                $this->dataModel->queryOne('//field[@name="genre"]/computer')->nodeValue = '';
-                $this->dataModel->queryOne('//field[@name="genre"]/fantasy')->nodeValue = '';
-                $this->dataModel->queryOne('//field[@name="genre"]/romance')->nodeValue = '';
-                $this->dataModel->queryOne('//field[@name="genre"]/horror')->nodeValue = 'selected';
-                $this->dataModel->queryOne('//field[@name="genre"]/scienceFiction')->nodeValue = '';
+                $this->selectDropDownValue('horror');
+                $this->unSelectDropDownValue(['computer', 'fantasy', 'romance', 'scienceFiction']);
                 break;
             case 'Science Fiction';
-                $this->dataModel->queryOne('//field[@name="genre"]/computer')->nodeValue = '';
-                $this->dataModel->queryOne('//field[@name="genre"]/fantasy')->nodeValue = '';
-                $this->dataModel->queryOne('//field[@name="genre"]/romance')->nodeValue = '';
-                $this->dataModel->queryOne('//field[@name="genre"]/horror')->nodeValue = '';
-                $this->dataModel->queryOne('//field[@name="genre"]/scienceFiction')->nodeValue = 'selected';
+                $this->selectDropDownValue('scienceFiction');
+                $this->unSelectDropDownValue(['computer', 'fantasy', 'romance', 'horror']);
                 break;
             default:
                 throw new Exception('Genre nicht in Datei vorhanden! ' . $this->genre);
@@ -169,6 +164,24 @@ class BooksFormCommand
         $this->repopulate($this->price, 'price');
         $this->repopulate($this->publishDate, 'publishDate');
         $this->repopulate($this->description, 'description');
+    }
+
+    /**
+     * @param string $dropDownElement
+     */
+    private function selectDropDownValue(string $dropDownElement)
+    {
+        $this->dataModel->queryOne('//field[@name="genre"]/'. $dropDownElement)->nodeValue = 'selected';
+    }
+
+    /**
+     * @param array $dropDownElements
+     */
+    private function unSelectDropDownValue(array $dropDownElements)
+    {
+        foreach ($dropDownElements as $dropDownElement) {
+            $this->dataModel->queryOne('//field[@name="genre"]/'. $dropDownElement)->nodeValue = '';
+        }
     }
 
     /**
