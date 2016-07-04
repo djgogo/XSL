@@ -68,8 +68,16 @@ class BooksFormCommand
             $this->dataModel->queryOne('//field[@name="price"]/error')->nodeValue = 'Bitte geben Sie einen gültigen Preis ein';
         }
 
-        if ($this->genre != 'Computer' && $this->genre != 'Fantasy' && $this->genre != 'Romance' && $this->genre != 'Horror' && $this->genre != 'Science Fiction') {
-            throw new Exception('Genre nicht in Datei vorhanden! ' . $this->genre);
+        $allowedGenres = [
+            'Computer',
+            'Fantasy',
+            'Romance',
+            'Horror',
+            'Science Fiction'
+        ];
+
+        if (!in_array($this->genre, $allowedGenres)) {
+            throw new Exception('Genre nicht gültig ' . $this->genre);
         }
 
         try {

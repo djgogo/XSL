@@ -15,10 +15,15 @@ class FileBackend
         }
 
         $file = fopen($filePath, 'r');
+        if ($file === false) {
+            throw new FileBackendException('Datei "' . $filePath . '" konnte nicht geöffnet werden');
+        }
         $content = stream_get_contents($file, filesize($filePath));
 
-        fclose($file);
-
+        $close = fclose($file);
+        if ($close === false) {
+            throw new FileBackendException('Datei "' . $filePath . '" konnte nicht geschlossen werden');
+        }
         return $content;
     }
 

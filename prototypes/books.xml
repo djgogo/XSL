@@ -165,4 +165,12 @@
     <publish_date>2016-06-30</publish_date>
     <description>Test Test Test Test Test Test</description>
   </book>
+  <book id="bk119">
+    <author>Sammy De Lux</author>
+    <title>Hop Schwiiz</title>
+    <genre>Computer</genre>
+    <price>34.40</price>
+    <publish_date>2016-12-31</publish_date>
+    <description>Hop Hop Hop</description>
+  </book>
 </catalog>

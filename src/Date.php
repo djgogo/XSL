@@ -36,6 +36,6 @@ class Date
      */
     function __toString() : string
     {
-        return $this->date;
+        return (string)$this->date;
     }
 }
