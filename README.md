@@ -4,4 +4,4 @@ XSL Exercise bibliothek.competec.ch
     - dynamical sort
     - search with wildcards
     - enter new books with complete validation
-    
+
