@@ -28,7 +28,7 @@ class Date
             throw new \InvalidDateException();
        }
 
-        $this->date = $dt;
+        $this->date = $dt->format('Y-m-d');
     }
 
     /**
@@ -36,6 +36,6 @@ class Date
      */
     function __toString() : string
     {
-        return (string)$this->date;
+        return $this->date;
     }
 }
