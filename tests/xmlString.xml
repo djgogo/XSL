@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<catalog>
+  <book id="bk120">
+    <author>Test</author>
+    <title>TestTitel</title>
+    <genre>Romance</genre>
+    <price>50.00</price>
+    <publish_date>2016-02-01</publish_date>
+    <description>Bestehendes Buch</description>
+  </book>
+</catalog>
